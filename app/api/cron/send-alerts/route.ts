@@ -40,7 +40,8 @@ export async function GET(request: Request) {
   // Group slots by area
   const slotsByArea = new Map<string, typeof slots>();
   for (const slot of slots) {
-    const area = (slot.course as { area_slug: string })?.area_slug ?? "la-quinta";
+    const course = slot.course as unknown as { area_slug?: string };
+    const area = course?.area_slug ?? "la-quinta";
     if (!slotsByArea.has(area)) slotsByArea.set(area, []);
     slotsByArea.get(area)!.push(slot);
   }
@@ -68,18 +69,21 @@ export async function GET(request: Request) {
         : (slotsByArea.get(areaSlug) ?? []);
     if (!areaSlots?.length) continue;
 
-    const slotPayload = areaSlots.map((s) => ({
-      courseName: (s.course as { name: string }).name,
-      teeTime: new Date(s.tee_time).toLocaleString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-      }),
-      priceCents: s.price_cents,
-      bookingUrl: (s.course as { booking_url?: string })?.booking_url ?? null,
-    }));
+    const slotPayload = areaSlots.map((s) => {
+      const c = s.course as unknown as { name?: string; booking_url?: string };
+      return {
+        courseName: c?.name ?? "Course",
+        teeTime: new Date(s.tee_time).toLocaleString("en-US", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        }),
+        priceCents: s.price_cents,
+        bookingUrl: c?.booking_url ?? null,
+      };
+    });
 
     const result = await sendAlertEmail(golfer.email, slotPayload);
     if (result.ok) {
