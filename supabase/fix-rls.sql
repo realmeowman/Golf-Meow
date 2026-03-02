@@ -12,8 +12,10 @@ create policy "Allow anon select golfers" on golfers for select to anon using (t
 
 drop policy if exists "Allow anon insert courses" on courses;
 drop policy if exists "Allow anon select courses" on courses;
+drop policy if exists "Allow anon update courses" on courses;
 create policy "Allow anon insert courses" on courses for insert to anon with check (true);
 create policy "Allow anon select courses" on courses for select to anon using (true);
+create policy "Allow anon update courses" on courses for update to anon using (true);
 
 drop policy if exists "Allow anon insert slots" on slots;
 drop policy if exists "Allow anon select slots" on slots;

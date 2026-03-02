@@ -13,7 +13,9 @@ insert into areas (slug, name) values
   ('la-quinta', 'La Quinta'),
   ('indian-wells', 'Indian Wells'),
   ('palm-desert', 'Palm Desert'),
-  ('rancho-mirage', 'Rancho Mirage')
+  ('rancho-mirage', 'Rancho Mirage'),
+  ('palm-springs', 'Palm Springs'),
+  ('cathedral-city', 'Cathedral City')
 on conflict (slug) do nothing;
 
 -- Golfers who signed up for alerts
@@ -31,6 +33,7 @@ create table if not exists courses (
   name text not null,
   area_slug text references areas(slug) not null,
   booking_url text,
+  rack_rate_cents int,
   created_at timestamptz default now()
 );
 

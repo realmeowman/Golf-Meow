@@ -16,6 +16,8 @@ export default async function CourseSubmitPage({
   { slug: "indian-wells", name: "Indian Wells" },
   { slug: "palm-desert", name: "Palm Desert" },
   { slug: "rancho-mirage", name: "Rancho Mirage" },
+  { slug: "palm-springs", name: "Palm Springs" },
+  { slug: "cathedral-city", name: "Cathedral City" },
 ];
 
   return (
@@ -61,6 +63,7 @@ export default async function CourseSubmitPage({
           method="POST"
           className="space-y-6 rounded-2xl border border-stone-200 bg-white p-8 shadow-sm"
         >
+        <input type="hidden" name="redirect" value="/courses" />
           <div>
             <label
               htmlFor="course_name"
@@ -115,6 +118,23 @@ export default async function CourseSubmitPage({
             />
           </div>
 
+          <div>
+            <label
+              htmlFor="rack_rate"
+              className="block text-sm font-medium text-stone-700"
+            >
+              Usual rack rate ($) — optional, for showing &quot;Save $X&quot;
+            </label>
+            <input
+              type="number"
+              id="rack_rate"
+              name="rack_rate"
+              min="1"
+              step="1"
+              placeholder="e.g. 150"
+              className="mt-2 w-full rounded-lg border border-stone-300 px-4 py-3 text-stone-900 placeholder-stone-400 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500/20"
+            />
+          </div>
           <div>
             <label
               htmlFor="price"
